@@ -7,27 +7,28 @@ const _ = require('underscore'); 	// filtrar campos de la bd
 // modelos
 const Usuario = require('../models/usuario');
 
+// middlewares
+const { verificaToken,
+		verificaAdmin_Role } 
+= require('../middlewares/autenticacion')
+
 // rutas
 app.get('/', (req, res) => {
   	res.send('Para ver usuario, ingrese /usuario');
 })
 
-app.get('/usuario', (req, res) => {
+app.get('/usuario', verificaToken ,(req, res) => {
 
-	// obtiene via parametro, comienzo del listado
 	let desde = req.query.desde || 0;
 	desde = Number(desde);
 
-	// obtiene via parametro, limite del listado
 	let limite = req.query.limite || 5;
 	limite = Number(limite);
 
-	// funcion para listar todos los registro - mostrar campos consulta
-	// estado: true muestra los usuarios activos
 	Usuario.find({ estado: true }, 'id nombre email estado google role')
-	.skip(desde)		// desde
-	.limit(limite)		// hasta
-	.exec((err, usuarios) => {		// ejecutar funcion listar
+	.skip(desde)		
+	.limit(limite)		
+	.exec((err, usuarios) => {		
 		if( err ){
 			return res.status(400).json({
 				ok: false,
@@ -35,9 +36,7 @@ app.get('/usuario', (req, res) => {
 			});
 		}
 
-		// Contar la cantidad de registros
-		// estado: true cuenta los usuarios activos
-		Usuario.count({ estado: true }, (err, conteo) => {
+		Usuario.countDocuments({ estado: true }, (err, conteo) => {
 			res.json({
 				ok: true,
 				usuarios,
@@ -48,7 +47,7 @@ app.get('/usuario', (req, res) => {
 	})
 })
 
-app.post('/usuario', (req, res) => {
+app.post('/usuario', [verificaToken,verificaAdmin_Role], (req, res) => {
 	let body = req.body;
 
 	let usuario = new Usuario({
@@ -75,7 +74,7 @@ app.post('/usuario', (req, res) => {
 	
 })
 
-app.put('/usuario/:id', (req, res) => {
+app.put('/usuario/:id', [verificaToken,verificaAdmin_Role], (req, res) => {
 	// id via parametro
 	let id = req.params.id;
 	// lista de campos permitidos para actualizar - libreria underscore
@@ -99,7 +98,7 @@ app.put('/usuario/:id', (req, res) => {
 
 })
 
-app.delete('/usuario/:id', (req, res) => {
+app.delete('/usuario/:id', [verificaToken,verificaAdmin_Role], (req, res) => {
 	
 	let id = req.params.id;
 

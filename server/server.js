@@ -9,15 +9,14 @@ const bodyParser = require('body-parser');
 // Using Node.js `require()`
 const mongoose = require('mongoose');
 
-// midlewares
-// parse application/x-www-form-urlencoded
+// midlewares - parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
  
 // parse application/json
 app.use(bodyParser.json())
 
-// rutas de usuario
-app.use( require('./routes/usuario') );
+// configuracion global de rutas
+app.use(require('./routes/index'));
 
 // conectando a la base de datos
 mongoose.connect(process.env.URL_DB,
