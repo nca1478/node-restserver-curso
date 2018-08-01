@@ -12,11 +12,6 @@ const { verificaToken,
 		verificaAdmin_Role } 
 = require('../middlewares/autenticacion')
 
-// rutas
-app.get('/', (req, res) => {
-  	res.send('Para ver usuario, ingrese /usuario');
-})
-
 app.get('/usuario', verificaToken ,(req, res) => {
 
 	let desde = req.query.desde || 0;

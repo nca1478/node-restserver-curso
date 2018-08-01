@@ -4,7 +4,7 @@ process.env.PORT = process.env.PORT || 3000;
 // Entorno
 process.env.NODE_ENV = process.env.NODE_ENV || 'dev';
 
-// Base de datos
+// Ruta de la Base de datos
 let urlDB;
 
 // Vencimiento del token
@@ -20,5 +20,7 @@ if( process.env.NODE_ENV === 'dev'){
 else{
 	urlDB = process.env.MONGO_URI;
 }
-
 process.env.URL_DB = urlDB;
+
+// Google Client ID
+process.env.CLIENT_ID = process.env.CLIENT_ID || '921717354975-7itt7gub4apvtj7jciuhscu7hatvkeit.apps.googleusercontent.com';
