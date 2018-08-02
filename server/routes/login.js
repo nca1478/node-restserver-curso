@@ -1,10 +1,10 @@
 // dependencias
 const express = require('express');
-const app = express();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const {OAuth2Client} = require('google-auth-library');	// google sign-in
 const client = new OAuth2Client(process.env.CLIENT_ID);	// google sign-in
+const app = express();
 
 // modelo
 const Usuario = require('../models/usuario');
@@ -63,9 +63,9 @@ async function verify( token ) {
 	const payload = ticket.getPayload();
 
 	return {
-		name: payload.name,
+		nombre: payload.name,
 		email: payload.email,
-		picture: payload.picture,
+		img: payload.picture,
 		google: true
 	}
 }
@@ -76,7 +76,7 @@ app.post('/google', async (req, res) => {
 
 	let googleUser = await verify( token )
 		.catch(e => {
-			return resp.status(403).json({
+			return res.status(403).json({
 				ok: false,
 				err: e
 			})
@@ -120,8 +120,7 @@ app.post('/google', async (req, res) => {
 			usuario.email = googleUser.email;
 			usuario.img = googleUser.img;
 			usuario.google = true;
-			usuario.password = ':)';
-			//usuario.password = bcrypt.hashSync('123456',10);
+			usuario.password = bcrypt.hashSync(':)',10);
 
 			usuario.save( (err,usuarioDB) => {
 				if( err ){
