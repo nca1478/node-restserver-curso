@@ -47,7 +47,7 @@ app.post('/producto', verificaToken, (req, res) => {
 	})
 })
 
-// buscar un producto por id
+// actualizar un producto por id
 app.put('/producto/:id', verificaToken, (req, res) => {
 
 	let id = req.params.id;
