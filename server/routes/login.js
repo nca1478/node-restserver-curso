@@ -1,6 +1,6 @@
 // dependencias
 const express = require('express');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const {OAuth2Client} = require('google-auth-library');	// google sign-in
 const client = new OAuth2Client(process.env.CLIENT_ID);	// google sign-in

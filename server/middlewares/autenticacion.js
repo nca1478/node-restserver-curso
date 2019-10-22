@@ -18,7 +18,10 @@ let verificaToken = (req, res, next) => {
 			})
 		}
 
+		// req va ser igual a la informacion del payload (info del usuario)
 		req.usuario = decoded.usuario;
+
+		// ejecutar lo que sigue
 		next();
 
 	})

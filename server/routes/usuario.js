@@ -1,7 +1,7 @@
 // dependencias
 const express = require('express');
 const app = express();
-const bcrypt = require('bcrypt');	// libreria para encriptar
+const bcrypt = require('bcryptjs');
 const _ = require('underscore'); 	// filtrar campos de la bd
 
 // modelos
@@ -20,7 +20,7 @@ app.get('/usuario', verificaToken ,(req, res) => {
 	let limite = req.query.limite || 5;
 	limite = Number(limite);
 
-	Usuario.find({ estado: true }, 'id nombre email estado google role')
+	Usuario.find({ estado: true }, 'id nombre email estado google role img')
 	.skip(desde)		
 	.limit(limite)		
 	.exec((err, usuarios) => {		
@@ -42,7 +42,7 @@ app.get('/usuario', verificaToken ,(req, res) => {
 	})
 })
 
-app.post('/usuario', [verificaToken,verificaAdmin_Role], (req, res) => {
+app.post('/usuario', (req, res) => {
 	let body = req.body;
 
 	let usuario = new Usuario({
